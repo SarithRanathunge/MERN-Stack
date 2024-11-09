@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 
-const NoteModel = ({closeModal, addNote, currentNote}) => {
+const NoteModel = ({closeModal, addNote, currentNote, editNote}) => {
     const [title, setTitle] =useState('');
     const [description, setDescription] =useState('');
 
@@ -17,7 +17,7 @@ const NoteModel = ({closeModal, addNote, currentNote}) => {
     const handleSubmit = async (e)=>{
       e.preventDefault();
       if(currentNote){
-        
+        editNote(currentNote._id, title, description);
       }else{
         addNote(title, description);
       }

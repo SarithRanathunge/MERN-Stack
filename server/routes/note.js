@@ -18,18 +18,40 @@ router.post('/add', middleware , async(req, res)=>{
 
         return res.status(200).json({success: true, message: "Note created successfully"});
    }catch(error){
-       console.log(error.message);
+       console.log(error);
        return res.status(500).json({success: false, message: "Error in adding Note"});
    }
 });
 
-router.get('/', async (req, res)=>{
+router.get('/', middleware ,async (req, res)=>{
     try{
-        const notes = await Note.find();
+        const notes = await Note.find({userId: req.user.id});
         return res.status(200).json({success: true, notes});
     }catch(error){
         return res.status(500).json({success: false, message: "Can not retrive notes"});
     }
 });
+
+router.put('/:id', async (req, res)=>{
+    try{
+        const {id} = req.params;
+        const updateNote = await Note.findByIdAndUpdate(id, req.body);
+        return res.status(200).json({success: true, updateNote});
+    }catch(error){
+        return res.status(500).json({success: false, message: "Can not update notes"});
+    }
+})
+
+router.delete('/:id', async (req, res)=>{
+    try{
+        const {id} = req.params;
+        const deleteNote = await Note.findByIdAndDelete(id);
+        return res.status(200).json({success: true, deleteNote});
+    }catch(error){
+        return res.status(500).json({success: false, message: "Can not delete notes"});
+    }
+})
+
+
 
 export default router;
